@@ -62,9 +62,12 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "news_scraper.pipelines.NewsScraperPipeline": 300,
-#}
+ITEM_PIPELINES = {
+   "news_scraper.pipelines.NewsScraperPipeline": 300,
+}
+
+# Configure logging
+LOG_LEVEL = 'INFO'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -90,3 +93,8 @@ ROBOTSTXT_OBEY = True
 # Set settings whose default value is deprecated to a future-proof value
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+import os
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project.settings')
+django.setup()
