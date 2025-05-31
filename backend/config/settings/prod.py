@@ -67,7 +67,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'newsbackend.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
+
 
 
 # Database

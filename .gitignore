@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+
+# Django
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+*.log
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Scrapy
+.scrapy/
+
+# Xcode/iOS
+ios-app/DerivedData/
+ios-app/*.xcworkspace
+ios-app/*.xcuserstate
+ios-app/Pods/
+ios-app/Podfile.lock
+
+# Environment variables
+.env
+*.env
+
+# Migrations (optional, if you don't want to track them)
+# backend/apps/*/migrations/
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+.nox/
+.cache/
+.pytest_cache/
+
+# Docker container data
+*.pid
+*.log
+
+# Docker volumes (named or bind-mounted)
+redis-data/
+
+# Docker Compose override files (if you use them locally)
+docker-compose.override.yml
+
+# Docker env files
+.env
+.env.*
+
+# Docker Desktop artifacts (if any)
+.docker/
+
+# Docker build cache (if accidentally generated)
+__pycache__/
+*.pyc
