@@ -40,3 +40,6 @@ w3lib==2.3.1
 zope.interface==7.2
 
 redis
+
+scrapy-user-agents
+scrapy-rotating-proxies

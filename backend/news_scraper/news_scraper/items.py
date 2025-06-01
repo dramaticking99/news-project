@@ -3,10 +3,14 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
+# myproject/items.py
 import scrapy
 
-
-class NewsScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class NewsArticleItem(scrapy.Item):
+    url          = scrapy.Field()
+    title        = scrapy.Field()
+    content_html = scrapy.Field()
+    author       = scrapy.Field()
+    publish_date = scrapy.Field()
+    tags         = scrapy.Field()
+    image_url    = scrapy.Field()
