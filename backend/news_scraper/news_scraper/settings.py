@@ -64,6 +64,7 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    "news_scraper.pipelines.NewsScraperPipeline": 300,
+   'news_scraper.pipelines.JsonWriterPipeline': 400,
 }
 
 # Configure logging
@@ -93,8 +94,3 @@ LOG_LEVEL = 'INFO'
 # Set settings whose default value is deprecated to a future-proof value
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
-
-import os
-import django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project.settings')
-django.setup()
