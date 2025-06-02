@@ -35,3 +35,5 @@ class JsonWriterPipeline:
         else:
             self.file.write(',\n' + line)
         return item
+    
+    
