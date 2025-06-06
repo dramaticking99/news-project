@@ -44,15 +44,19 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
-#    "news_scraper.middlewares.NewsScraperSpiderMiddleware": 543,
-#}
+SPIDER_MIDDLEWARES = {
+   "news_scraper.middlewares.NewsScraperSpiderMiddleware": 543,
+}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    "news_scraper.middlewares.NewsScraperDownloaderMiddleware": 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   "news_scraper.middlewares.RandomUserAgentMiddleware": 400,
+    "news_scraper.middlewares.RenderMiddleware": 410,
+    # If using Splash:
+    "scrapy_splash.SplashCookiesMiddleware": 723,
+    "scrapy_splash.SplashMiddleware": 725,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -63,8 +67,9 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   "news_scraper.pipelines.NewsScraperPipeline": 300,
-   'news_scraper.pipelines.JsonWriterPipeline': 400,
+   "news_scraper.pipelines.ValidationPipeline": 100,
+    "news_scraper.pipelines.RedisPushPipeline": 200,
+    "news_scraper.pipelines.JsonWriterPipeline": 300,
 }
 
 # Configure logging

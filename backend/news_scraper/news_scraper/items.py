@@ -7,10 +7,10 @@
 import scrapy
 
 class NewsArticleItem(scrapy.Item):
-    url          = scrapy.Field()
-    title        = scrapy.Field()
-    content_html = scrapy.Field()
-    author       = scrapy.Field()
-    publish_date = scrapy.Field()
-    tags         = scrapy.Field()
-    image_url    = scrapy.Field()
+    site_key    = scrapy.Field()   # e.g. "ndtv", "siteB", so you know which site this came from
+    title       = scrapy.Field()
+    author      = scrapy.Field()
+    published   = scrapy.Field()
+    content     = scrapy.Field()
+    url         = scrapy.Field()
+    image_url   = scrapy.Field()   # Optional, if the article has an image

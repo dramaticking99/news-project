@@ -6,34 +6,36 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 import json
+import redis
+import scrapy
 
-
-class NewsScraperPipeline:
+class ValidationPipeline:
     def process_item(self, item, spider):
-
-       return item
-
+        # Ensure title + content exist; if not, drop
+        if not item.get("title") or not item.get("content"):
+            raise scrapy.exceptions.DropItem(f"Missing field in {item}")
+        return item
 
 class JsonWriterPipeline:
     def open_spider(self, spider):
-        # Called when the spider opens. We open a file handle to write JSON array.
-        self.file = open('articles.json', 'w', encoding='utf-8')
-        self.file.write('[\n')
-        self.first_item = True
-
-    def close_spider(self, spider):
-        # When spider closes, finish the JSON array and close file handle.
-        self.file.write('\n]')
-        self.file.close()
+        self.file = open(f"{spider.name}_{spider.site_key}.json", "w", encoding="utf-8")
 
     def process_item(self, item, spider):
-        # Called for each item yielded by the spider.
-        line = json.dumps(dict(item), ensure_ascii=False)
-        if self.first_item:
-            self.first_item = False
-            self.file.write(line)
-        else:
-            self.file.write(',\n' + line)
+        line = json.dumps(dict(item), ensure_ascii=False) + "\n"
+        self.file.write(line)
         return item
-    
-    
+
+    def close_spider(self, spider):
+        self.file.close()
+
+class RedisPushPipeline:
+    def __init__(self, redis_url):
+        self.redis_conn = redis.Redis.from_url(redis_url)
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(redis_url=crawler.settings.get("REDIS_URL"))
+
+    def process_item(self, item, spider):
+        self.redis_conn.lpush("news_items", json.dumps(dict(item), ensure_ascii=False))
+        return item

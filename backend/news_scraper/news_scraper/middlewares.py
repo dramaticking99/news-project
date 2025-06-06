@@ -8,6 +8,27 @@ from scrapy import signals
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
 
+# Import SplashRequest for handling JavaScript-heavy pages
+from scrapy_splash import SplashRequest
+
+import random
+
+class RandomUserAgentMiddleware:
+    # Middleware to set a random User-Agent from a list
+    def process_request(self, request, spider):
+        ua = random.choice(spider.settings.get("USER_AGENT_LIST"))
+        request.headers["User-Agent"] = ua
+
+class RenderMiddleware:
+    # If spider sets `meta['render_js'] = True`, we redirect to SplashRequest
+    def process_request(self, request, spider):
+        if request.meta.get("render_js"):
+            return SplashRequest(
+                url=request.url,
+                callback=request.callback,
+                args={"wait": 1},
+                meta=request.meta,
+            )
 
 class NewsScraperSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
