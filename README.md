@@ -1,1 +1,1 @@
-# News Project Monorepo
+# News Project Backend
