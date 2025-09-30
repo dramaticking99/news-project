@@ -1,0 +1,30 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  server:
+    build: .
+    container_name: news-project-server
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app           
+      - /app/node_modules 
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    container_name: news-project-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    env_file:
+      - .env
+
+volumes:
+  mongodata:
