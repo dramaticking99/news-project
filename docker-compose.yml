@@ -3,19 +3,53 @@
 version: '3.8'
 
 services:
-  server:
-    build: .
-    container_name: news-project-server
+  # Node.js Express Service
+  main_service:
+    build:
+      context: ./main_service  # Specifies the directory containing the Dockerfile
+    container_name: main_service
     ports:
       - "5000:5000"
     volumes:
-      - .:/app           
-      - /app/node_modules 
+      - ./main_service:/app
+      - /app/node_modules # Prevents host node_modules from overwriting container's
     env_file:
-      - .env
+      - ./main_service/.env
     depends_on:
       - mongodb
+    restart: unless-stopped
 
+  # Python FastAPI Service
+  api_service:
+    build:
+      context: ./api_service
+    container_name: api_service
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api_service:/app
+    env_file:
+      - ./api_service/.env
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+  # Python Scrapy Service
+  scraper_service:
+    build:
+      context: ./scraper_service
+    container_name: scraper_service
+    volumes:
+      - ./scraper_service:/app
+    env_file:
+      - ./scraper_service/.env
+    depends_on:
+      - mongodb
+    # The 'tail' command keeps the container running so you can exec into it
+    # to run your scrapes manually.
+    command: tail -f /dev/null
+
+  # MongoDB Database Service
   mongodb:
     image: mongo:latest
     container_name: news-project-db
@@ -25,6 +59,8 @@ services:
       - mongodata:/data/db
     env_file:
       - .env
+    restart: always
 
+# Named volume for persisting MongoDB data
 volumes:
   mongodata:
