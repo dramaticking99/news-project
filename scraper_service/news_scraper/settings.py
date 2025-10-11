@@ -32,7 +32,7 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 #USER_AGENT = "news_scraper (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Concurrency and throttling settings
 #CONCURRENT_REQUESTS = 16
@@ -74,7 +74,16 @@ DOWNLOAD_DELAY = 1
 
 # --- MongoDB Pipeline Settings ---
 ITEM_PIPELINES = {
-   "news_scraper.pipelines.MongoPipeline": 300,
+   # Use the simple MonitoringPipeline for counting
+   'news_scraper.monitoring_pipeline.MonitoringPipeline': 300,
+   
+   # Your existing pipeline for saving articles
+   'news_scraper.mongo_pipeline.MongoPipeline': 400,
+}
+
+EXTENSIONS = {
+   # The updated extension will handle all the reporting logic
+   'news_scraper.extensions.SpiderMonitoringExtension': 500,
 }
 
 MONGO_USER = os.getenv('MONGO_USER')
@@ -110,3 +119,7 @@ AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 FEED_EXPORT_ENCODING = "utf-8"
 
 PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 60000
+
+# Set the spider to automatically stop after 1 hour (3600 seconds)
+# This ensures a graceful shutdown.
+CLOSESPIDER_TIMEOUT = 3600

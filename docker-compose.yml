@@ -39,16 +39,26 @@ services:
     build:
       context: ./scraper_service
     container_name: scraper_service
+    working_dir: /app/news_scraper
+    environment:
+      - PYTHONPATH=/app
     volumes:
       - ./scraper_service:/app
     env_file:
       - ./scraper_service/.env
     depends_on:
       - mongodb
-    # The 'tail' command keeps the container running so you can exec into it
-    # to run your scrapes manually.
-    command: tail -f /dev/null
-
+    # This command runs an infinite loop.
+    # Scrapy itself will handle the 1-hour timeout for each run.
+    command: >
+      sh -c "while true; do
+        for spider in bbc india_express republic_world the_hindu the_times_of_india;
+        do
+          scrapy crawl $$spider;
+        done;
+        echo 'All crawls finished or timed out. Waiting for 6 hours...';
+        sleep 21600;
+      done"
   # MongoDB Database Service
   mongodb:
     image: mongo:latest

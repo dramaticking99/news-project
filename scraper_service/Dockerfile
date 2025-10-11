@@ -10,6 +10,7 @@ COPY ./requirements.txt .
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+RUN playwright install --with-deps
 
 # Copy the Scrapy project code
 COPY . .
